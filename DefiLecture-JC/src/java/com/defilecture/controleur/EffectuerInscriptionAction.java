@@ -86,7 +86,7 @@ public class EffectuerInscriptionAction extends Action implements RequirePRGActi
             prenom = Util.toUTF8(request.getParameter("prenom")),
             nom = Util.toUTF8(request.getParameter("nom")),
             motPasse = Util.toUTF8(request.getParameter("motPasse")),
-            programmeEtude = request.getParameter("programmeEtude"),
+            programmeEtude = Util.toUTF8(request.getParameter("programmeEtude")),
             pseudonyme = Util.toUTF8(request.getParameter("pseudonyme"));
 
         Connection cnx =
