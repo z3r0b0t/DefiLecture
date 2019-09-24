@@ -27,7 +27,7 @@ import jdbc.Config;
 import jdbc.Connexion;
 
 public class EffectuerModificationDefiAction extends Action
-    implements RequirePRGAction, DataSender {
+  implements RequirePRGAction, DataSender {
 
   private HashMap data;
 
@@ -35,19 +35,19 @@ public class EffectuerModificationDefiAction extends Action
   public String execute() {
 
     if (userIsConnected()
-        && (userIsAdmin() || userIsModerateur())
-        && request.getParameter("modifie") != null) {
+	&& (userIsAdmin() || userIsModerateur())
+	&& request.getParameter("modifie") != null) {
 
-      String nom = request.getParameter("nom"),
-          description = request.getParameter("description"),
-          heureDebut = request.getParameter("heureDebut"),
-          dateDebut = request.getParameter("dateDebut") + " " + heureDebut,
-          heureFin = request.getParameter("heureFin"),
-          dateFin = request.getParameter("dateFin") + " " + heureFin,
-          question = request.getParameter("question"),
-          reponse = request.getParameter("reponse"),
-          choixReponse = request.getParameter("choixReponseJSON"),
-          idDefi = request.getParameter("idDefi");
+      String nom = request.getParameter("nom");
+      String description = request.getParameter("description");
+      String heureDebut = request.getParameter("heureDebut");
+      String dateDebut = request.getParameter("dateDebut") + " " + heureDebut;
+      String heureFin = request.getParameter("heureFin");
+      String dateFin = request.getParameter("dateFin") + " " + heureFin;
+      String question = request.getParameter("question");
+      String reponse = request.getParameter("reponse");
+      String choixReponse = request.getParameter("choixReponseJSON");
+      String idDefi = request.getParameter("idDefi");
 
       int valeurMinute;
 
@@ -115,13 +115,13 @@ public class EffectuerModificationDefiAction extends Action
           }
         }
       } catch (SQLException ex) {
-        Logger.getLogger(EffectuerModificationDefiAction.class.getName())
-            .log(Level.SEVERE, null, ex);
-        return "*.do?tache=afficherPageParticipationDefi";
+	Logger.getLogger(EffectuerModificationDefiAction.class.getName())
+	  .log(Level.SEVERE, null, ex);
+	return "*.do?tache=afficherPageParticipationDefi";
       } catch (NumberFormatException ex) {
-        Logger.getLogger(EffectuerModificationDefiAction.class.getName())
-            .log(Level.SEVERE, null, ex);
-        return "*.do?tache=afficherPageParticipationDefi";
+	Logger.getLogger(EffectuerModificationDefiAction.class.getName())
+	  .log(Level.SEVERE, null, ex);
+	return "*.do?tache=afficherPageParticipationDefi";
       }
     }
     return "*.do?tache=afficherPageParticipationDefi";

@@ -23,6 +23,7 @@ import com.defilecture.modele.LectureDAO;
 import com.util.Util;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jdbc.Config;
@@ -33,19 +34,26 @@ public class EffectuerCreationLectureAction extends Action implements RequirePRG
   @Override
   public String execute() {
 
-    Logger.getLogger(this.getClass().getName())
-        .log(Level.INFO, ("Entrer dans l'action créer lecture"));
-
     if (userIsConnected()
         && (userIsParticipant() || userIsCapitaine())
         && request.getParameter("titre") != null
         && request.getParameter("dureeMinutes") != null
         && request.getParameter("obligatoire") != null) {
 
+      if (LocalDateTime.now().isBefore(getDébutLectures())
+          || LocalDateTime.now().isAfter(getFinLectures())) {
+        return "*.do?tache=afficherPageGestionLecture";
+      }
+
       String titre = Util.toUTF8(request.getParameter("titre"));
-      int dureeMinutes = Integer.parseInt(request.getParameter("dureeMinutes")),
-          obligatoire = Integer.parseInt(request.getParameter("obligatoire")),
-          idCompte = ((Integer) session.getAttribute("currentId")).intValue();
+      int dureeMinutes = Integer.parseInt(request.getParameter("dureeMinutes"));
+      int obligatoire = Integer.parseInt(request.getParameter("obligatoire"));
+      int idCompte = ((Integer) session.getAttribute("currentId")).intValue();
+
+      // Vérifie la limite de lectures
+      if (dureeMinutes <= 0) {
+        return "*.do?tache=afficherPageGestionLecture";
+      }
 
       Lecture lecture;
 
@@ -56,6 +64,12 @@ public class EffectuerCreationLectureAction extends Action implements RequirePRG
             Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);
         LectureDAO dao;
         dao = new LectureDAO(cnx);
+
+        // Vérifie la limite absolue de temps de lecture quotidien
+        if (dao.getMinutesAjd(idCompte) + dureeMinutes > getLimiteLectureHard()) {
+          return "*.do?tache=afficherPageGestionLecture";
+        }
+
         lecture = new Lecture();
         lecture.setIdCompte(idCompte);
         lecture.setDureeMinutes(dureeMinutes);

@@ -14,10 +14,11 @@
  */
 package com.defilecture.controleur;
 
+import com.defilecture.Util;
 import com.defilecture.modele.Compte;
 import com.defilecture.modele.CompteDAO;
-import com.util.Util;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -32,41 +33,53 @@ public class EffectuerConnexionAction extends Action implements RequirePRGAction
   @Override
   public String execute() {
     String action = "*.do?tache=afficherPageConnexion";
-    data.put("echecConnexion", "L'identifiant et/ou le mot de passe entré est invalide");
+    boolean erreur = false;
 
     if (request.getParameter("identifiant") != null && request.getParameter("motPasse") != null) {
       String identifiant = Util.toUTF8(request.getParameter("identifiant")),
-          motPasse = Util.toUTF8(request.getParameter("motPasse"));
-
+	motPasse = Util.toUTF8(request.getParameter("motPasse"));
+    
       try {
-        CompteDAO dao =
-            new CompteDAO(
-                Connexion.startConnection(
-                    Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER));
-        Compte compte = dao.findByIdentifiantMotPasse(identifiant, motPasse);
+	CompteDAO dao =
+	  new CompteDAO(
+			Connexion.startConnection(
+						  Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER));
+	Compte compte = dao.findByPseudonyme(identifiant);
 
-        // On vérifie s'il y a un résultat
-        if (compte != null) {
-          session = request.getSession(true);
-          session.setAttribute("connecte", compte.getIdCompte());
-          session.setAttribute("role", compte.getRole());
-          session.setAttribute("currentId", compte.getIdCompte());
-          action = "*.do?tache=afficherTableauScores";
-        } else {
-          data.put("echecConnexion", "L'identifiant et/ou le mot de passe entré est invalide");
-          data.put("identifiant", identifiant);
-        }
-      } catch (SQLException ex) {
-        Logger.getLogger(EffectuerConnexionAction.class.getName()).log(Level.SEVERE, null, ex);
-      } finally {
-        Connexion.close();
+	if (compte == null) {
+	  compte = dao.findByCourriel(identifiant);
+	}
+
+	if (compte != null &&
+	    compte.verifierMotPasse(motPasse) &&
+	    ((((Integer)compte.getRole()).intValue()==Compte.ADMINISTRATEUR ||
+	      (LocalDateTime.now().isAfter(getDébutInscriptions())
+	       && LocalDateTime.now().isBefore(getFinLectures()))))){
+	  session = request.getSession(true);
+	  session.setAttribute("connecte", compte.getIdCompte());
+	  session.setAttribute("role", compte.getRole());
+	  session.setAttribute("currentId", compte.getIdCompte());
+	  action = "*.do?tache=afficherTableauScores";
+	} else {
+	  erreur = true;
+	}
+
+      if (erreur) {
+	data.put("echecConnexion", "L'identifiant ou le mot de passe entrés sont invalides");
+	data.put("identifiant", identifiant);
+	action = "echec.do?tache=afficherPageConnexion";
       }
+    } catch (SQLException ex) {
+      Logger.getLogger(EffectuerConnexionAction.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      Connexion.close();
     }
-    return action;
   }
+  return action;
+}
 
-  @Override
-  public void setData(Map<String, Object> data) {
-    this.data = (HashMap) data;
-  }
+@Override
+public void setData(Map<String, Object> data) {
+  this.data = (HashMap) data;
+}
 }

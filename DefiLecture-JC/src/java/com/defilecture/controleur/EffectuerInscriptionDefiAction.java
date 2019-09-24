@@ -25,6 +25,7 @@ import com.defilecture.modele.InscriptionDefiDAO;
 import com.util.Util;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +43,14 @@ public class EffectuerInscriptionDefiAction extends Action implements RequirePRG
     if (userIsConnected()
         && (userIsParticipant() || userIsCapitaine())
         && request.getParameter("valider") != null) {
+	    if (LocalDateTime.now().isBefore(getDébutInscriptions())
+	    || LocalDateTime.now().isAfter(getFinInscriptions())) {
+        return "*.do?tache=afficherPageParticipationDefi";
+      }
+
       String reponseParticipant = Util.toUTF8(request.getParameter("reponseParticipant"));
-      int idCompte = ((Integer) (session.getAttribute("currentId"))).intValue(),
-          idDefi = Integer.parseInt(request.getParameter("idDefi"));
+      int idCompte = ((Integer) (session.getAttribute("currentId"))).intValue();
+      int idDefi = Integer.parseInt(request.getParameter("idDefi"));
       InscriptionDefi inscriptionDefi = new InscriptionDefi();
 
       try {
@@ -62,7 +68,9 @@ public class EffectuerInscriptionDefiAction extends Action implements RequirePRG
               daoInscriptionDefi.findAllByIdCompte(idCompte);
 
           for (InscriptionDefi i : listeInscriptionDefi) {
-            if (i.getIdDefi() == idDefi) return "*.do?tache=afficherPageParticipationDefi";
+            if (i.getIdDefi() == idDefi) {
+              return "*.do?tache=afficherPageParticipationDefi";
+            }
           }
 
           cnx = Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);
@@ -77,9 +85,8 @@ public class EffectuerInscriptionDefiAction extends Action implements RequirePRG
             inscriptionDefi.setValeurMinute(0);
             inscriptionDefi.setEstReussi(0);
 
-          }
-          // Si oui, une inscription_defi est crée, avec le résultat 1 (réussie)
-          else {
+          } else {
+            // Si oui, une inscription_defi est crée, avec le résultat 1 (réussie)
             inscriptionDefi.setValeurMinute(defi.getValeurMinute());
             inscriptionDefi.setEstReussi(1);
 

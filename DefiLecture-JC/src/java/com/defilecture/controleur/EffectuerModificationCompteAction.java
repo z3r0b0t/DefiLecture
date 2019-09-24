@@ -14,9 +14,9 @@
  */
 package com.defilecture.controleur;
 
+import com.defilecture.Util;
 import com.defilecture.modele.Compte;
 import com.defilecture.modele.CompteDAO;
-import com.util.Util;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -90,7 +90,7 @@ public class EffectuerModificationCompteAction extends Action
         }
 
         if (motPasseNouveau != null && !"".equals(motPasseNouveau.trim())) {
-          if (motPasseActuel != null && compte.verifierMotPasse(motPasseActuel)) {
+          if (motPasseActuel != null && compte.verifierMotPasse(motPasseActuel) || userIsAdmin()) {
             if (motPasseNouveau.equals(motPasseNouveauConfirmation)) {
               compte.setMotPasse(Util.toUTF8(motPasseNouveau));
             } else {
@@ -101,7 +101,7 @@ public class EffectuerModificationCompteAction extends Action
             }
           } else {
             erreurSurvenue = true;
-            data.put("erreurMotPasse", "Le mot de passe entré n'est pas le bon");
+            data.put("erreurMotPasse", "Mot de passe incorrect");
           }
         }
         if (pseudonyme != null && !pseudonyme.equals(compte.getPseudonyme())) {
@@ -161,7 +161,7 @@ public class EffectuerModificationCompteAction extends Action
     } else {
       return "*.do?tache=afficherPageGestionListeCompte";
     }
-    return "*..do?tache=afficherPageConnexion";
+    return "*.do?tache=afficherPageConnexion";
   }
 
   @Override

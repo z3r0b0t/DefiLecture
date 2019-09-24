@@ -14,6 +14,7 @@
  */
 package com.defilecture.controleur;
 
+import com.defilecture.Util;
 import com.defilecture.modele.Compte;
 import com.defilecture.modele.CompteDAO;
 import com.defilecture.modele.Equipe;
@@ -42,6 +43,9 @@ public class EffectuerModificationEquipeAction extends Action
         if (userIsConnected() && userIsCapitaine() && request.getParameter("nom") != null) {
           String nomEquipe = Util.toUTF8(request.getParameter("nom"));
           try {
+
+            int idEquipe = Integer.parseInt(request.getParameter("idEquipe"));
+
             Connection cnx =
                 Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);
             Compte compte =
@@ -67,6 +71,10 @@ public class EffectuerModificationEquipeAction extends Action
                       + request.getParameter("nom")
                       + " est déjà utilisé par un autre équipage");
             }
+          } catch (NumberFormatException ex) {
+            data.put("erreurNom", "Équipe inexistante.");
+            Logger.getLogger(EffectuerModificationEquipeAction.class.getName())
+                .log(Level.SEVERE, null, ex);
           } catch (SQLException ex) {
             Logger.getLogger(EffectuerModificationEquipeAction.class.getName())
                 .log(Level.SEVERE, null, ex);

@@ -88,15 +88,6 @@ public class CompteDAO extends DAO<Compte> {
   }
 
   @Override
-  public Compte read(String id) {
-    try {
-      return this.read(Integer.parseInt(id));
-    } catch (NumberFormatException e) {
-      return null;
-    }
-  }
-
-  @Override
   public boolean update(Compte compte) {
     String req =
         "UPDATE compte SET COURRIEL = ?, MOT_PASSE = ?, "
@@ -239,32 +230,6 @@ public class CompteDAO extends DAO<Compte> {
     return liste;
   }
 
-  public Compte findByIdentifiantMotPasse(String identifiant, String motPasse) {
-    ResultSet resultat = null;
-    PreparedStatement paramStm = null;
-    Compte compte = null;
-
-    String req = "SELECT * FROM compte WHERE (`COURRIEL` = ? or " + "`PSEUDONYME` = ?)";
-
-    try {
-      paramStm = cnx.prepareStatement(req);
-      paramStm.setString(1, identifiant);
-      paramStm.setString(2, identifiant);
-      resultat = paramStm.executeQuery();
-
-      if (resultat.next()) {
-        compte = getCompteFromResultSet(resultat);
-        compte.verifierMotPasse(motPasse);
-      }
-      resultat.close();
-      paramStm.close();
-    } catch (SQLException ex) {
-      Logger.getLogger(CompteDAO.class.getName()).log(Level.SEVERE, null, ex);
-    }
-
-    return compte;
-  }
-
   public Compte findByPseudonyme(String pseudo) {
     String req = "SELECT * FROM compte WHERE `PSEUDONYME` = ?";
     PreparedStatement paramStm = null;
@@ -287,8 +252,7 @@ public class CompteDAO extends DAO<Compte> {
   }
 
   public int countCompteByIdEquipe(int idEquipe) {
-    String req =
-        "SELECT COUNT(ID_DEMANDE_EQUIPE) FROM `demande_equipe` WHERE ID_EQUIPE = ? and STATUT_DEMANDE = 1";
+    String req = "SELECT COUNT(ID_DEMANDE_EQUIPE) FROM `demande_equipe` WHERE ID_EQUIPE = ? and STATUT_DEMANDE = 1";
     int nbMembre = 0;
     PreparedStatement paramStm = null;
 

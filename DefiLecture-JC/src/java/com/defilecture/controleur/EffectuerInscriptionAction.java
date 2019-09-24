@@ -14,11 +14,12 @@
  */
 package com.defilecture.controleur;
 
+import com.defilecture.Util;
 import com.defilecture.modele.Compte;
 import com.defilecture.modele.CompteDAO;
-import com.util.Util;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -34,6 +35,14 @@ public class EffectuerInscriptionAction extends Action implements RequirePRGActi
     boolean erreur = false;
     String action = "*.do?tache=afficherPageInscription";
 
+    if (LocalDateTime.now().isBefore(getDébutInscriptions())
+        || LocalDateTime.now().isAfter(getFinInscriptions())) {
+      erreur = true;
+      data.put(
+          "erreurDates",
+          "Les inscriptions sont désactivées pour le moment. Revenez plus tard ");
+    }
+
     if (request.getParameter("pseudonyme") != null) {
       data.put("pseudonyme", Util.toUTF8(request.getParameter("pseudonyme")));
     }
@@ -46,7 +55,7 @@ public class EffectuerInscriptionAction extends Action implements RequirePRGActi
       Logger.getLogger(EffectuerInscriptionAction.class.getName())
           .log(Level.INFO, "Le courriel ne peut pas être null.");
       erreur = true;
-      data.put("erreurCourriel", "Veuillez entrer votre courriel");
+      data.put("erreurCourriel", "Veuillez saisir un courriel");
     } else {
       data.put("courriel", request.getParameter("courriel"));
     }
@@ -55,7 +64,7 @@ public class EffectuerInscriptionAction extends Action implements RequirePRGActi
       Logger.getLogger(EffectuerInscriptionAction.class.getName())
           .log(Level.INFO, "Le prénom ne peut pas être null.");
       erreur = true;
-      data.put("erreurPrenom", "Veuillez entrer votre prenom");
+      data.put("erreurPrenom", "Veuillez saisir votre prénom");
     } else {
       data.put("prenom", Util.toUTF8(request.getParameter("prenom")));
     }
@@ -64,7 +73,7 @@ public class EffectuerInscriptionAction extends Action implements RequirePRGActi
       Logger.getLogger(EffectuerInscriptionAction.class.getName())
           .log(Level.INFO, "Le nom ne peut pas être null.");
       erreur = true;
-      data.put("erreurNom", "Veuillez entrer votre nom");
+      data.put("erreurNom", "Veuillez saisir votre nom");
     } else {
       data.put("nom", Util.toUTF8(request.getParameter("nom")));
     }
@@ -93,6 +102,7 @@ public class EffectuerInscriptionAction extends Action implements RequirePRGActi
             Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);
         CompteDAO dao = new CompteDAO(cnx);
         Compte compte = new Compte();
+
         compte.setCourriel(courriel);
         compte.setPrenom(prenom);
         compte.setNom(nom);
@@ -123,7 +133,7 @@ public class EffectuerInscriptionAction extends Action implements RequirePRGActi
                 "erreurInscription",
                 "Problème de création du compte. Veuillez réessayer. Si le problème survient à répétition, contactez un administrateur.");
             Logger.getLogger(EffectuerInscriptionAction.class.getName())
-                .log(Level.INFO, "La création du compte a échouée.");
+                .log(Level.INFO, "La création du compte a échoué.");
           }
         }
       } catch (SQLException ex) {
@@ -131,7 +141,6 @@ public class EffectuerInscriptionAction extends Action implements RequirePRGActi
       }
     } else {
       action = "echec.do?tache=afficherPageInscription";
-      ;
     }
 
     Logger.getLogger(EffectuerInscriptionAction.class.getName()).log(Level.INFO, data.toString());
