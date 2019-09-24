@@ -22,7 +22,7 @@ import com.defilecture.modele.DemandeEquipe;
 import com.defilecture.modele.DemandeEquipeDAO;
 import com.defilecture.modele.InscriptionDefi;
 import com.defilecture.modele.InscriptionDefiDAO;
-import com.util.Util;
+import com.defilecture.Util;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
