@@ -16,6 +16,7 @@ package com.defilecture.controleur;
 
 import com.defilecture.modele.Defi;
 import com.defilecture.modele.DefiDAO;
+import com.util.Util;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -41,15 +42,15 @@ public class EffectuerCreationDefiAction extends Action implements RequirePRGAct
         && request.getParameter("reponse") != null
         && request.getParameter("valeurMinute") != null
         && request.getParameter("dateDebut") != null) {
-      String nom = request.getParameter("nom"),
-          description = request.getParameter("description"),
-          dateDebut = request.getParameter("dateDebut"),
-          heureDebut = request.getParameter("heureDebut"),
-          dateFin = request.getParameter("dateFin"),
-          heureFin = request.getParameter("heureFin"),
-          question = request.getParameter("question"),
-          choixReponse = request.getParameter("choixReponseJSON"),
-          reponse = request.getParameter("reponse");
+      String nom = Util.toUTF8(request.getParameter("nom")),
+          description = Util.toUTF8(request.getParameter("description")),
+          dateDebut = Util.toUTF8(request.getParameter("dateDebut")),
+          heureDebut = Util.toUTF8(request.getParameter("heureDebut")),
+          dateFin = Util.toUTF8(request.getParameter("dateFin")),
+          heureFin = Util.toUTF8(request.getParameter("heureFin")),
+          question = Util.toUTF8(request.getParameter("question")),
+          choixReponse = Util.toUTF8(request.getParameter("choixReponseJSON")),
+          reponse = Util.toUTF8(request.getParameter("reponse"));
 
       int idCompte = ((Integer) session.getAttribute("currentId")).intValue(),
           valeurMinute = Integer.parseInt(request.getParameter("valeurMinute"));

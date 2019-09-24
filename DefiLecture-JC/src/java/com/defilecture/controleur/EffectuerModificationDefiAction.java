@@ -57,8 +57,11 @@ public class EffectuerModificationDefiAction extends Action
         Defi defi = new DefiDAO(cnx).read(idDefi);
         if (defi != null) {
 
-          if (nom != null && !"".equals(nom.trim()) && !nom.equals(defi.getNom())) {
-            defi.setNom(nom);
+          if (nom != null) {
+            nom = Util.toUTF8(nom);
+            if (!"".equals(nom.trim()) && !nom.equals(defi.getNom())) {
+              defi.setNom(nom);
+            }
           }
 
           if (request.getParameter("valeurMinute") != null) {
@@ -75,24 +78,28 @@ public class EffectuerModificationDefiAction extends Action
             defi.setDateFin(dateFin);
           }
 
-          if (description != null
-              && !"".equals(description.trim())
+          if (description != null) { 
+            description = Util.toUTF8(description);
+            if(!"".equals(description.trim())
               && !description.equals(defi.getDescription())) {
-            defi.setDescription(description);
+              defi.setDescription(description);
+            }
           }
 
-          if (question != null
-              && !"".equals(question.trim())
+          if (question != null) {
+            question = Util.toUTF8(question);
+            if(!"".equals(question.trim())
               && !question.equals(defi.getQuestion())) {
-            defi.setQuestion(question);
+              defi.setQuestion(question);
+            }
           }
 
           if (choixReponse != defi.getChoixReponse()) {
-            defi.setChoixReponse(choixReponse);
+            defi.setChoixReponse(Util.toUTF8(choixReponse));
           }
 
           if (reponse != defi.getReponse()) {
-            defi.setReponse(reponse);
+            defi.setReponse(Util.toUTF8(reponse));
           }
 
           cnx = Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);

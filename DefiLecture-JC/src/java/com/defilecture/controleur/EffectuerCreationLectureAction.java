@@ -20,6 +20,7 @@ import com.defilecture.modele.DemandeEquipe;
 import com.defilecture.modele.DemandeEquipeDAO;
 import com.defilecture.modele.Lecture;
 import com.defilecture.modele.LectureDAO;
+import com.util.Util;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -41,7 +42,7 @@ public class EffectuerCreationLectureAction extends Action implements RequirePRG
         && request.getParameter("dureeMinutes") != null
         && request.getParameter("obligatoire") != null) {
 
-      String titre = request.getParameter("titre");
+      String titre = Util.toUTF8(request.getParameter("titre"));
       int dureeMinutes = Integer.parseInt(request.getParameter("dureeMinutes")),
           obligatoire = Integer.parseInt(request.getParameter("obligatoire")),
           idCompte = ((Integer) session.getAttribute("currentId")).intValue();

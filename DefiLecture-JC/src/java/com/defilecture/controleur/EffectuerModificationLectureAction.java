@@ -55,8 +55,8 @@ public class EffectuerModificationLectureAction extends Action implements Requir
             lecture.setEstObligatoire(estObligatoire);
           }
 
-          if (titre != null && !"".equals(titre.trim()) && !titre.equals(lecture.getTitre())) {
-            lecture.setTitre(titre);
+          if (titre != null && !"".equals(titre.trim()) && !Util.toUTF8(titre).equals(lecture.getTitre())) {
+            lecture.setTitre(Util.toUTF8(titre));
           }
 
           if (!dao.update(lecture)) {

@@ -39,7 +39,7 @@ public class EffectuerInscriptionAction extends Action implements RequirePRGActi
     }
 
     if (request.getParameter("programmeEtude") != null) {
-      data.put("programmeEtude", request.getParameter("programmeEtude"));
+      data.put("programmeEtude", Util.toUTF8(request.getParameter("programmeEtude")));
     }
 
     if (request.getParameter("courriel") == null) {

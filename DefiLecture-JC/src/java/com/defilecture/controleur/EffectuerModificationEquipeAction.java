@@ -39,17 +39,18 @@ public class EffectuerModificationEquipeAction extends Action
 
       if (request.getParameter("modifier") != null) {
         if (userIsConnected() && userIsCapitaine() && request.getParameter("nom") != null) {
+          String nomEquipe = Util.toUTF8(request.getParameter("nom"));
           try {
             Connection cnx =
                 Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);
             Compte compte =
                 new CompteDAO(cnx).read(((Integer) session.getAttribute("currentId")).intValue());
             EquipeDAO equipeDao = new EquipeDAO(cnx);
-            Equipe equipe = equipeDao.findByNom(request.getParameter("nom"));
+            Equipe equipe = equipeDao.findByNom(nomEquipe);
 
             if (compte != null && equipe == null && compte.getIdEquipe() != -1) {
               equipe = equipeDao.read(compte.getIdEquipe());
-              equipe.setNom(request.getParameter("nom"));
+              equipe.setNom(nomEquipe);
 
               if (equipeDao.update(equipe)) {
                 data.put("succesNom", "L'enregistrement du nouveau nom s'est fait avec succès");
