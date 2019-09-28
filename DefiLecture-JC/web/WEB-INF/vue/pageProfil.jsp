@@ -125,8 +125,8 @@
                                             <span class="glyphicon glyphicon-edit glyphProfil"></span>
                                         </a>
 
-					<fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.dLecture']}" var="datedebut" type="both"/>
-					<fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>			
+					<fmt:parseDate pattern="yyyy-MM-dd'T'HH:mm" value="${applicationScope['com.defilecture.dLecture']}" var="datedebut" type="both"/>
+					<fmt:parseDate pattern="yyyy-MM-dd'T'HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>			
                                         <a href="?tache=afficherPageCreationLecture" id="ajoutLectures" style="display: ${now ge datedebut && now lt datefin ? 'block' : 'none'}">
                                             <span style="margin-right: 1em;" class="glyphicon glyphicon-plus glyphProfil"></span>
                                         </a>

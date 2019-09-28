@@ -21,8 +21,8 @@
 
 		    <c:if test="${ !empty sessionScope.connecte && sessionScope.role le 2 }">
 
-			<fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.dLecture']}" var="datedebut" type="both"/>
-			<fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
+			<fmt:parseDate pattern="yyyy-MM-dd'T'HH:mm" value="${applicationScope['com.defilecture.dLecture']}" var="datedebut" type="both"/>
+			<fmt:parseDate pattern="yyyy-MM-dd'T'HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
 			<div id="menuLectures" style="display: ${now ge datedebut && now lt datefin ? 'block' : 'none'}">
 			<li class="dropdown">
 			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Lectures
@@ -80,8 +80,8 @@
 			    </c:choose>
 			</c:when>
 			<c:otherwise>
-			    <fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.dInscription']}" var="datedebut" type="both"/>
-			    <fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
+			    <fmt:parseDate pattern="yyyy-MM-dd'T'HH:mm" value="${applicationScope['com.defilecture.dInscription']}" var="datedebut" type="both"/>
+			    <fmt:parseDate pattern="yyyy-MM-dd'T'HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
 			    <div id="menuInscription" style="display: ${now ge datedebut && now lt datefin ? 'block' : 'none'}">
 				<li>
 				    <a href='*.do?tache=afficherPageInscription'>
@@ -113,8 +113,8 @@
 		    <c:if test="${ sessionScope.role ge 1 }">
 
 			<c:if test="${!empty sessionScope.connecte}">
-			    <fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.dLecture']}" var="datedebut" type="both"/>
-			    <fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
+			    <fmt:parseDate pattern="yyyy-MM-dd'T'HH:mm" value="${applicationScope['com.defilecture.dLecture']}" var="datedebut" type="both"/>
+			    <fmt:parseDate pattern="yyyy-MM-dd'T'HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
 			    <div id="menuDefis" style="display: ${now ge datedebut && now lt datefin ? 'block' : 'none'}">
 				<li class="dropdown">
 				    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Épreuves
@@ -162,8 +162,8 @@
 
 		    <c:choose>
 			<c:when test="${ empty sessionScope.connecte }">
-			    <fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.dInscription']}" var="datedebut" type="both"/>
-			    <fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
+			    <fmt:parseDate pattern="yyyy-MM-dd'T'HH:mm" value="${applicationScope['com.defilecture.dInscription']}" var="datedebut" type="both"/>
+			    <fmt:parseDate pattern="yyyy-MM-dd'T'HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
 			    <div id="menuConnexion" style="display: ${now ge datedebut && now lt datefin ? 'block' : 'none'}">
 				<li><a href='*.do?tache=afficherPageConnexion'><span class="glyphicon glyphicon-log-in"></span> Se connecter</a></li>
 			    </div>
