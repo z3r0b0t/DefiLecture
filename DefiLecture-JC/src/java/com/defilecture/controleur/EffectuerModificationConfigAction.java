@@ -37,25 +37,49 @@ public class EffectuerModificationConfigAction extends Action implements Require
         Connection cnx =
             Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);
 
-        List<String> parameterNames = new ArrayList<>(request.getParameterMap().keySet());
         configDAO = new ConfigSiteDAO(cnx);
         configUpdate = new ConfigSite();
+        String regDate = "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}";
 
-        // Modification et création des paramètres dans la même action
-        for (String id : parameterNames) {
+        if(request.getParameter("accesA") != null && request.getParameter("accesA").matches(regDate)) {
+          configUpdate.getConfig().put("accesA", request.getParameter("accesA").replace('T',' '));
+        }
 
-          if (!"tache".equals(id)) {
-            configUpdate.getConfig().put(id, request.getParameter(id));
-          }
+        if(request.getParameter("accesDe") != null && request.getParameter("accesDe").matches(regDate)) {
+          configUpdate.getConfig().put("accesDe", request.getParameter("accesDe").replace('T', ' ');
+        }
+
+        if(request.getParameter("dInscription") != null && request.getParameter("dInscription").matches(regDate)) {
+          configUpdate.getConfig().put("dInscription", request.getParameter("dInscription").replace('T', ' ');
+        }
+
+        if(request.getParameter("dLecture") != null && request.getParameter("dLecture").matches(regDate)) {
+          configUpdate.getConfig().put("dLecture", request.getParameter("dLecture").replace('T', ' ');
+        }
+
+        if(request.getParameter("fLecture") != null && request.getParameter("fLecture").matches(regDate)) {
+          configUpdate.getConfig().put("fLecture", request.getParameter("fLecture").replace('T', ' ');
+        }
+
+        if(request.getParameter("nbMatelots") != null && request.getParameter("nbMatelots").matches(regDate)) {
+          configUpdate.getConfig().put("nbMatelots", request.getParameter("nbMatelots").replace('T', ' ');
+        }
+
+        if(request.getParameter("limiteSoft") != null && request.getParameter("limiteSoft").matches(regDate)) {
+          configUpdate.getConfig().put("limiteSoft", request.getParameter("limiteSoft").replace('T', ' ');
+        }
+
+        if(request.getParameter("limiteHard") != null && request.getParameter("limiteHard").matches(regDate)) {
+          configUpdate.getConfig().put("limiteHard", request.getParameter("limiteHard").replace('T', ' ');
         }
 
         configDAO.update(configUpdate);
+
         for (Map.Entry<String, String> entry : configUpdate.getConfig().entrySet()) {
           session
               .getServletContext()
               .setAttribute("com.defilecture." + entry.getKey(), entry.getValue());
         }
-
       } catch (SQLException ex) {
         Logger.getLogger(EffectuerModificationConfigAction.class.getName())
             .log(Level.SEVERE, null, ex);
