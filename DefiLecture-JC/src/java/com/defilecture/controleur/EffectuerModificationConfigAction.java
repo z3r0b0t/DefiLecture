@@ -46,31 +46,31 @@ public class EffectuerModificationConfigAction extends Action implements Require
         }
 
         if(request.getParameter("accesDe") != null && request.getParameter("accesDe").matches(regDate)) {
-          configUpdate.getConfig().put("accesDe", request.getParameter("accesDe").replace('T', ' ');
+          configUpdate.getConfig().put("accesDe", request.getParameter("accesDe").replace('T', ' '));
         }
 
         if(request.getParameter("dInscription") != null && request.getParameter("dInscription").matches(regDate)) {
-          configUpdate.getConfig().put("dInscription", request.getParameter("dInscription").replace('T', ' ');
+          configUpdate.getConfig().put("dInscription", request.getParameter("dInscription").replace('T', ' '));
         }
 
         if(request.getParameter("dLecture") != null && request.getParameter("dLecture").matches(regDate)) {
-          configUpdate.getConfig().put("dLecture", request.getParameter("dLecture").replace('T', ' ');
+          configUpdate.getConfig().put("dLecture", request.getParameter("dLecture").replace('T', ' '));
         }
 
         if(request.getParameter("fLecture") != null && request.getParameter("fLecture").matches(regDate)) {
-          configUpdate.getConfig().put("fLecture", request.getParameter("fLecture").replace('T', ' ');
+          configUpdate.getConfig().put("fLecture", request.getParameter("fLecture").replace('T', ' '));
         }
 
         if(request.getParameter("nbMatelots") != null && request.getParameter("nbMatelots").matches(regDate)) {
-          configUpdate.getConfig().put("nbMatelots", request.getParameter("nbMatelots").replace('T', ' ');
+          configUpdate.getConfig().put("nbMatelots", request.getParameter("nbMatelots").replace('T', ' '));
         }
 
         if(request.getParameter("limiteSoft") != null && request.getParameter("limiteSoft").matches(regDate)) {
-          configUpdate.getConfig().put("limiteSoft", request.getParameter("limiteSoft").replace('T', ' ');
+          configUpdate.getConfig().put("limiteSoft", request.getParameter("limiteSoft").replace('T', ' '));
         }
 
         if(request.getParameter("limiteHard") != null && request.getParameter("limiteHard").matches(regDate)) {
-          configUpdate.getConfig().put("limiteHard", request.getParameter("limiteHard").replace('T', ' ');
+          configUpdate.getConfig().put("limiteHard", request.getParameter("limiteHard").replace('T', ' '));
         }
 
         configDAO.update(configUpdate);
