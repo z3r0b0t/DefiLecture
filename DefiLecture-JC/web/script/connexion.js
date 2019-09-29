@@ -5,12 +5,11 @@
  */
 
 
-    $(document).ready(function(){
-         $("#msgMDPoublie").hide();
-       $("#lienMDPoublie").click(function(){
-            $("#spanMDP").toggleClass("glyphicon-menu-up")
-           $("#msgMDPoublie").slideToggle();
-       });
+$(document).ready(function(){
+    $("#lienMDPoublie").click(function(){
+      $("#spanMDP").toggleClass("glyphicon-menu-up")
+      $("#msgMDPoublie").slideToggle();
     });
+});
 
 

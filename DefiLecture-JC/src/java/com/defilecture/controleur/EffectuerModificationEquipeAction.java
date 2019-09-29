@@ -37,22 +37,26 @@ public class EffectuerModificationEquipeAction extends Action
     String action = "*.do?tache=afficherPageAccueil";
     if (request.getParameter("idEquipe") != null) {
       action = "*.do?tache=afficherPageEquipe&idEquipe=" + request.getParameter("idEquipe");
-
+	
+      String nomEquipe = Util.toUTF8(request.getParameter("nom"));
       if (request.getParameter("modifier") != null) {
         if (userIsConnected()
             && (userIsCapitaine() || userIsAdmin())
-            && request.getParameter("nom") != null) {
+            && nomEquipe != null) {
           try {
+
+            int idEquipe = Integer.parseInt(request.getParameter("idEquipe"));
+
             Connection cnx =
                 Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);
             Compte compte =
                 new CompteDAO(cnx).read(((Integer) session.getAttribute("currentId")).intValue());
             EquipeDAO equipeDao = new EquipeDAO(cnx);
-            Equipe equipe = equipeDao.findByNom(request.getParameter("nom"));
+            Equipe equipe = equipeDao.findByNom(nomEquipe);
 
-            if (compte != null && equipe == null && compte.getIdEquipe() != -1) {
-              equipe = equipeDao.read(compte.getIdEquipe());
-              equipe.setNom(Util.toUTF8(request.getParameter("nom")));
+            if ((userIsAdmin() || compte != null) && equipe == null) {
+              equipe = equipeDao.read(idEquipe);
+              equipe.setNom(nomEquipe);
 
               if (equipeDao.update(equipe)) {
                 data.put("succesNom", "L'enregistrement du nouveau nom s'est fait avec succès");
@@ -65,9 +69,13 @@ public class EffectuerModificationEquipeAction extends Action
               data.put(
                   "erreurNom",
                   "Le nom "
-                      + request.getParameter("nom")
+                      + nomEquipe
                       + " est déjà utilisé par un autre équipage");
             }
+          } catch (NumberFormatException ex) {
+            data.put("erreurNom", "Équipe inexistante.");
+            Logger.getLogger(EffectuerModificationEquipeAction.class.getName())
+                .log(Level.SEVERE, null, ex);
           } catch (SQLException ex) {
             Logger.getLogger(EffectuerModificationEquipeAction.class.getName())
                 .log(Level.SEVERE, null, ex);
