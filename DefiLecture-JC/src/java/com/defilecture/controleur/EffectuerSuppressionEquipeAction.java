@@ -60,11 +60,14 @@ public class EffectuerSuppressionEquipeAction extends Action
             compte.setIdEquipe(-1);
             DemandeEquipe demande = demandeequipeDao.findByIdCompteEquipe(compte.getIdCompte(), equipe.getIdEquipe());
 
-            if(compteDao.update(compte) && demandeequipeDao.delete(demande)) {
+            if(compteDao.update(compte)) {
+              if(demande != null) {
+                demandeequipeDao.delete(demande);
                 Logger.getLogger(this.getClass().getName())
                   .log(Level.INFO, "Le compte #" + compte.getIdCompte() + " a été retiré de l'équipe #" + idEquipe);
-              data.put("suppressionSucces", "L'équipe a été supprimée avec succès.");
-              equipeDao.delete(equipe);
+                data.put("suppressionSucces", "L'équipe a été supprimée avec succès.");
+                equipeDao.delete(equipe);
+              }
             } else {
               Logger.getLogger(this.getClass().getName())
                 .log(Level.INFO, "Le compte #" + compte.getIdCompte() + " n'a pas été retiré de l'équipe #" + idEquipe);
