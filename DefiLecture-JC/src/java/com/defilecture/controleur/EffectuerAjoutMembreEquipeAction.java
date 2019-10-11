@@ -89,18 +89,21 @@ public class EffectuerAjoutMembreEquipeAction extends Action
             }
           }
 
+          demandeEq.setPoint(compte.getPoint());
+
           if (demandeEq.getStatutDemande() == DemandeEquipe.EN_ATTENTE) {
             demandeEq.setStatutDemande(DemandeEquipe.ACCEPTEE);
-            if (daoDE.update(demandeEq)) {
-              daoCompte.update(compte);
-            } else {
-              data.put("erreurDemandeNonAcceptee", "La demande n'a pas pu être acceptée.");
-              return "echec.do?tache=afficherPageModificationEquipe&idEquipe=" + idEquipe;
-            }
           } else {
             data.put(
                 "erreurParticipantDejaAccepter",
                 "Le participant a déjà été accepté ou a été suspendu.");
+            return "echec.do?tache=afficherPageModificationEquipe&idEquipe=" + idEquipe;
+          }
+
+          if (daoDE.update(demandeEq)) {
+            daoCompte.update(compte);
+          } else {
+            data.put("erreurDemandeNonAcceptee", "La demande n'a pas pu être acceptée.");
             return "echec.do?tache=afficherPageModificationEquipe&idEquipe=" + idEquipe;
           }
 
