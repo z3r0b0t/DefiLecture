@@ -58,18 +58,18 @@ while (it.hasNext()) {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-fr_FR.min.js"></script>
     </head>
-    <body >
-	<%@include file="menu.jsp" %>
-        <div class="container">
-            <c:choose>
-                <c:when test="${ !empty requestScope.vue }">
-                    <c:set var="vue" value="/WEB-INF/vue/${requestScope.vue}"/>
-                    <jsp:include page="${vue}" ></jsp:include>
-                </c:when>
-                <c:otherwise>
-                    <jsp:include page="/WEB-INF/vue/pageMarcheASuivre.jsp" ></jsp:include>
-                </c:otherwise>
-            </c:choose>
-        </div> 
+    <body>
+      <%@include file="sidebar.jsp" %>
+      <div class="container">
+          <c:choose>
+              <c:when test="${ !empty requestScope.vue }">
+                  <c:set var="vue" value="/WEB-INF/vue/${requestScope.vue}"/>
+                  <jsp:include page="${vue}" ></jsp:include>
+              </c:when>
+              <c:otherwise>
+                  <jsp:include page="/WEB-INF/vue/pageMarcheASuivre.jsp" ></jsp:include>
+              </c:otherwise>
+          </c:choose>
+      </div> 
     </body>
 </html>
