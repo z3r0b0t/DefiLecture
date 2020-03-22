@@ -103,7 +103,7 @@
                                         <p class='bold'>Nom de l'équipe :</p>
                                         <p><c:out value="${equipe.nom}" /></p>
                                         <p class='bold'>Points de l'équpe :</p>
-                                        <p><c:out value="${equipe.point}" /></p>
+                                        <p><c:out value="${equipe.score}" /></p>
                                     </div>
                                 </c:when>
                                 <c:otherwise> <!--Sinon, affiche un message pour avertir-->
@@ -121,7 +121,7 @@
                                 <p>
                                     Lectures
                                     <c:if test="${memeUser == true}"> <!--Si c'est le profil du user-->
-                                        <a href="?tache=afficherPageGestionLecture"> <!--Lien pour edit ses lectures-->
+                                        <a href="?tache=afficherPageGestionLectures"> <!--Lien pour edit ses lectures-->
                                             <span class="glyphicon glyphicon-edit glyphProfil"></span>
                                         </a>
 

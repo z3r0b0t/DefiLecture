@@ -95,7 +95,7 @@ public class EffectuerAjoutMembreEquipeAction extends Action
             demandeEq.setStatutDemande(DemandeEquipe.ACCEPTEE);
           } else {
             data.put(
-                "erreurParticipantDejaAccepter",
+                "erreurParticipantDejaAccepté",
                 "Le participant a déjà été accepté ou a été suspendu.");
             return "echec.do?tache=afficherPageModificationEquipe&idEquipe=" + idEquipe;
           }

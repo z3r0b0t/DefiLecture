@@ -23,7 +23,6 @@ import com.defilecture.modele.LectureDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jdbc.Config;
@@ -37,7 +36,7 @@ public class EffectuerSuppressionLectureAction extends Action implements Require
 
 	if (LocalDateTime.now().isBefore(getDébutLectures())
 	    || LocalDateTime.now().isAfter(getFinLectures())) {
-        return "*.do?tache=afficherPageGestionLecture";
+        return "*.do?tache=afficherPageGestionLectures";
       }
 
       String idLecture = request.getParameter("idLecture");
@@ -84,6 +83,6 @@ public class EffectuerSuppressionLectureAction extends Action implements Require
             .log(Level.SEVERE, null, ex);
       }
     }
-    return "*.do?tache=afficherPageGestionLecture";
+    return "*.do?tache=afficherPageGestionLectures";
   }
 }

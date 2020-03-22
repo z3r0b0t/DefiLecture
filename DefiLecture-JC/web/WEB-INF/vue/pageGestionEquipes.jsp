@@ -21,7 +21,7 @@
 <%@page import="java.sql.Connection"%>
 <%@page import="com.defilecture.modele.Equipe"%>
 <%@page import="com.defilecture.modele.EquipeDAO"%>
-<script language="javascript" src="./script/jsPageGestionListeEquipe.js"></script>
+<script language="javascript" src="./script/jsPageGestionEquipes.js"></script>
 
 <jsp:useBean id="connexion" scope="page" class="jdbc.Connexion"></jsp:useBean>  
 <jsp:useBean id="daoEquipe" scope="page" class="com.defilecture.modele.EquipeDAO">
@@ -53,7 +53,7 @@
                     <tr>
                         <td>${equipe.getNom()}</td>
                         <td>${equipe.getNbMembres()}</td>
-                        <td>${equipe.getPoint()}</td>
+                        <td>${equipe.getScore()}</td>
                         <td><a href="*.do?tache=afficherPageModificationEquipe&idEquipe=${equipe.getIdEquipe()}">Modifier</a></td>
                         <td><a onclick="supprimerEquipe(${equipe.getIdEquipe()})">Supprimer</a></td>
                     </tr>
