@@ -1,92 +1,55 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
-<jsp:useBean id="now" class="java.util.Date" />
+
+<fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.dLecture']}" var="datedebut" type="both"/>
+<fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
 
 <div class='container-fluid'  style="margin-bottom: 90px" >
     <nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container-fluid">
 	  <div class="navbar-header">
       <a class="navbar-brand logo-navigation" href='*.do?tache=afficherPageMarcheASuivre'></a>
-      <!-- Apparait lorsque la fenêtre devient de la taille d'un téléphone mobile -->
       <button id="btn-burger" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#optionsNavigation">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
 	  </div>
 
-	  <!-- Options contenues dans le bouton à son activation -->
 	  <div class="collapse navbar-collapse" id="optionsNavigation">
-		<ul class="nav navbar-nav">
-		  <c:if test="${ !empty sessionScope.connecte && sessionScope.role le 2 }">
-        <!-- Sous-Menu de gestion des lectures-->
-        <fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.dLecture']}" var="datedebut" type="both"/>
-        <fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
-        <div id="menuLectures" style="display: ${now ge datedebut && now lt datefin ? 'block' : 'none'}">
-			    <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Lectures<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="*.do?tache=afficherPageCreationLecture">Ajouter une lecture</a></li>
-              <li><a href="*.do?tache=afficherPageGestionLecture">Voir mes lectures</a></li>
-            </ul>
-			    </li>
-        </div>
-      </c:if>
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="scoreboard.do?tache=afficherPageTableauScores">
+              <% out.println(application.getAttribute("vocBanque"));%>
+          </a>
+        </li>
 
-		  <li>
-        <a href="scoreboard.do?tache=afficherPageTableauScores">
-            <% out.println(application.getAttribute("vocBanque"));%>
-        </a>
-      </li>
+        <%-- Sous-menu de gestion des lectures --%>
+        <c:if test="${ now ge datedebut && now lt datefin }">
+          <div id="menuLectures">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Lectures<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="*.do?tache=afficherPageCreationLecture">Ajouter une lecture</a></li>
+                <li><a href="*.do?tache=afficherPageGestionLecture">Voir mes lectures</a></li>
+              </ul>
+            </li>
+          </div>
+        </c:if>
 
-		  <c:choose>
-			<c:when test="${ !empty sessionScope.connecte }">
-			    <!-- <li><a href="*.do?tache=afficherPageProfil">Page de profil</a></li> -->
-			    <c:choose>
-				<c:when test="${ (sessionScope.role eq 2) }">
-				    <c:choose>
-					<c:when test="${compteConnecte.idEquipe gt -1}">
-					    <li><a href="affichagePageEquipe.do?tache=afficherPageEquipe&idEquipe=${compteConnecte.idEquipe}">
-						Page <% out.println(application.getAttribute("vocEquipe1"));%></a>
-					    </li>
-					    <li><a href="joindreEquipe.do?tache=afficherPageListeDemandesEquipe&ordre=recu">
-						Acc&eacute;der aux demandes</a>
-					    </li>
-					</c:when>
-					<c:otherwise>
-					    <li><a href="creationEquipe.do?tache=afficherPageCreationEquipe">Cr&eacute;er <% out.println(application.getAttribute("vocEquipe3"));%></a></li>
-					</c:otherwise>
-				    </c:choose>
-				</c:when>
-				<c:otherwise>
-				    <c:choose>
-					<c:when test="${sessionScope.role < 3}">
-					    <c:choose>
-						<c:when test="${compteConnecte.idEquipe > -1}">
-						    <li><a href="affichagePageEquipe.do?tache=afficherPageEquipe&idEquipe=${compteConnecte.idEquipe}">
-							Page <% out.println(application.getAttribute("vocEquipe1"));%></a>
-						    </li>
-						</c:when>
-						<c:otherwise>
-						    <li><a href="joindreEquipe.do?tache=afficherPageListeEquipes">Se joindre à <% out.println(application.getAttribute("vocEquipe3"));%></a></li>
-						</c:otherwise>
-					    </c:choose>
-					</c:when>
-				    </c:choose>
-				</c:otherwise>
-
-			    </c:choose>
-			</c:when>
-			<c:otherwise>
-			    <fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.dInscription']}" var="datedebut" type="both"/>
-			    <fmt:parseDate pattern="yyyy-MM-dd HH:mm" value="${applicationScope['com.defilecture.fLecture']}" var="datefin" type="both"/>
-			    <div id="menuInscription" style="display: ${now ge datedebut && now lt datefin ? 'block' : 'none'}">
-				<li>
-				    <a href='*.do?tache=afficherPageInscription'>
-					S'inscrire</a>
-				</li>
-			    </div>
-			</c:otherwise>
-		    </c:choose>
+        <%-- Lien vers la page d'équipe et aux demandes--%>
+        <c:choose>
+          <c:when test="${compteConnecte.idEquipe gt -1}">
+            <li>
+              <a href="affichagePageEquipe.do?tache=afficherPageEquipe&idEquipe=${compteConnecte.idEquipe}">Page <% out.println(application.getAttribute("vocEquipe1"));%></a>
+            </li>
+            <li>
+              <a href="joindreEquipe.do?tache=afficherPageListeDemandesEquipe&ordre=recu">Acc&eacute;der aux demandes</a>
+            </li>
+          </c:when>
+          <c:otherwise>
+            <li><a href="creationEquipe.do?tache=afficherPageCreationEquipe">Cr&eacute;er <% out.println(application.getAttribute("vocEquipe3"));%></a></li>
+          </c:otherwise>
+        </c:choose>
 
 		    <c:if test="${ sessionScope.role eq 4 }">
 
@@ -136,8 +99,8 @@
 			</c:if>
 		    </c:if>
 
-		</ul>
-		<ul class="nav navbar-nav navbar-right">
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
 
                     <li id='li-facebook'>
 			<a id='facebook'  target="_blank" href='https://www.facebook.com/DefiLectureCollegeRosemont/'></a>
@@ -183,8 +146,8 @@
 			    </li>
 			</c:otherwise>
 		    </c:choose>
-		</ul>
-	    </div>
+      </ul>
+    </div>
 	</div>
-    </nav>
+  </nav>
 </div>

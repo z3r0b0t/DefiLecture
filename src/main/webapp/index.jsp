@@ -14,12 +14,6 @@
      You should have received a copy of the GNU General Public License
      along with DefiLecture.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<%-- 
-Document   : index
-Created on : 2017-10-14, 12:23:05
-Author     : Joel & Charles
---%>
-
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.Map.Entry"%>
@@ -29,21 +23,25 @@ Author     : Joel & Charles
 <%@page import="com.defilecture.modele.Theme"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:useBean id="now" class="java.util.Date" />
+
 <c:if test="${ !empty sessionScope.connecte}">
-    <% CompteDAO dao = new CompteDAO(Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER));
-    pageContext.setAttribute("compteConnecte", dao.read(session.getAttribute("connecte").toString())); %>
+    <%
+      CompteDAO dao = new CompteDAO(Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER));
+      pageContext.setAttribute("compteConnecte", dao.read(session.getAttribute("connecte").toString())); 
+    %>
 </c:if> 
 
 <%
-Theme t= new Theme();
-Iterator<Map.Entry<String, String>> it = t.getTheme().entrySet().iterator();
-while (it.hasNext()) {
-    Map.Entry<String, String> pair = it.next();
-    application.setAttribute(pair.getKey(), pair.getValue());
-}
-%>  
+  Theme t= new Theme();
+  Iterator<Map.Entry<String, String>> it = t.getTheme().entrySet().iterator();
+  while (it.hasNext()) {
+      Map.Entry<String, String> pair = it.next();
+      application.setAttribute(pair.getKey(), pair.getValue());
+  }
+%>
+
 <!DOCTYPE html>
-<!-- Layout -->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -58,18 +56,45 @@ while (it.hasNext()) {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-fr_FR.min.js"></script>
     </head>
-    <body >
-	<%@include file="menu.jsp" %>
-        <div class="container">
-            <c:choose>
-                <c:when test="${ !empty requestScope.vue }">
-                    <c:set var="vue" value="/WEB-INF/vue/${requestScope.vue}"/>
-                    <jsp:include page="${vue}" ></jsp:include>
-                </c:when>
-                <c:otherwise>
-                    <jsp:include page="/WEB-INF/vue/pageMarcheASuivre.jsp" ></jsp:include>
-                </c:otherwise>
-            </c:choose>
-        </div> 
+    <body>
+      <%-- MENU --%>
+      <c:choose>
+        <%-- Menu pour les visiteurs --%>
+        <c:when test="${ empty sessionScope.connecte }">
+          <%@include file="menu_visiteur.jsp" %>
+        </c:when>
+
+        <c:otherwise>
+          <c:choose>
+            <%-- Menu pour les participants --%>
+            <c:when test="${ sessionScope.role eq 1}">
+              <%@include file="menu_participant.jsp" %>
+            </c:when>
+
+            <%-- Menu pour les modérateurs --%>
+            <c:when test="${ sessionScope.role eq 2}">
+              <%@include file="menu_moderateur.jsp" %>
+            </c:when>
+
+            <%-- Menu pour les administrateurs --%>
+            <c:when test="${ sessionScope.role eq 3}">
+              <%@include file="menu_admin.jsp" %>
+            </c:when>
+          </c:choose>
+        </c:otherwise>
+      </c:choose>
+
+      <%-- VUE --%>
+      <div class="container">
+        <c:choose>
+          <c:when test="${ !empty requestScope.vue }">
+            <c:set var="vue" value="/WEB-INF/vue/${requestScope.vue}"/>
+            <jsp:include page="${vue}" ></jsp:include>
+          </c:when>
+          <c:otherwise>
+            <jsp:include page="/WEB-INF/vue/pageMarcheASuivre.jsp" ></jsp:include>
+          </c:otherwise>
+        </c:choose>
+      </div> 
     </body>
 </html>
