@@ -71,13 +71,18 @@
               <%@include file="menu_participant.jsp" %>
             </c:when>
 
-            <%-- Menu pour les modérateurs --%>
+            <%-- Menu pour les participants --%>
             <c:when test="${ sessionScope.role eq 2}">
+              <%@include file="menu_capitaine.jsp" %>
+            </c:when>
+
+            <%-- Menu pour les modérateurs --%>
+            <c:when test="${ sessionScope.role eq 3}">
               <%@include file="menu_moderateur.jsp" %>
             </c:when>
 
             <%-- Menu pour les administrateurs --%>
-            <c:when test="${ sessionScope.role eq 3}">
+            <c:when test="${ sessionScope.role eq 4}">
               <%@include file="menu_admin.jsp" %>
             </c:when>
           </c:choose>
