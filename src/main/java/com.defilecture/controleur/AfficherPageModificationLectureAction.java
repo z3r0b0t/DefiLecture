@@ -28,16 +28,16 @@ public class AfficherPageModificationLectureAction extends Action {
   @Override
   public String execute() {
     try {
-      // Seuls les Capitaines et les Participants peuvent ajouter et modifier leurs lectures.
-      if (userIsConnected() && request.getParameter("id") != null) {
-        if (userIsCapitaine() || userIsParticipant()) {
-          Connection cnx =
-              Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);
-          Lecture lecture = new LectureDAO(cnx).read(request.getParameter("id"));
+      if (userIsConnected() && request.getParameter("idLecture") != null) {
+        Connection cnx = Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);
+        Lecture lecture = new LectureDAO(cnx).read(request.getParameter("idLecture"));
+        
+        if (lecture != null) {
+          boolean lectureAppartientParticipant = 
+            (userIsCapitaine() || userIsParticipant()) 
+              && lecture.getIdCompte() == ((Integer) session.getAttribute("currentId")).intValue();
 
-          if (lecture != null
-              && lecture.getIdCompte()
-                  == ((Integer) session.getAttribute("currentId")).intValue()) {
+          if (userIsModerateur() || userIsAdmin() || lectureAppartientParticipant) {
             request.setAttribute("vue", "pageModificationLecture.jsp");
           }
         }

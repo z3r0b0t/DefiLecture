@@ -30,7 +30,7 @@ Author     : Joel
 <%@page import="jdbc.Config"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<script language="javascript" src="./script/jsPageGestionEquipe.js"></script>
+<script language="javascript" src="./script/jsPageGestionEquipes.js"></script>
 
 <!-- Faire la connexion -->
 <jsp:useBean id="connexion" class="jdbc.Connexion"/>
@@ -63,12 +63,11 @@ Author     : Joel
     </c:otherwise>
 </c:choose>
 
-<!-- Ajouter l'equipe dans les variables -->
+<%-- Ajouter l'equipe dans les variables --%>
 <c:set var="listeMembres" value="${compteDao.findByIdEquipe(equipe.getIdEquipe())}"/>
 <c:set var="listeComptes" value="${compteDao.findAll()}"/>
 <c:set var="nbMembres" value="${listeMembres.size()}"/>
 
-<!-- Reste du code -->
 <c:set var="permissionAccordee" value="${((sessionScope.role eq Compte.CAPITAINE) 
                                        and (compteConnecte.idEquipe eq equipe.idEquipe)) or (sessionScope.role eq Compte.ADMINISTRATEUR)}"></c:set>
 <div class='row'> 
@@ -196,8 +195,8 @@ Author     : Joel
                 </div>
                 <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="idCompte">
                     <c:forEach items="${listeComptes}" var="compte">
-                        <!-- Évite d'afficher les comptes modérateur et administrateur -->
-                        <c:if test="${compte.getIdEquipe()==-1 && compte.role<compte.MODERATEUR}">
+                        <%-- Évite d'afficher les comptes modérateur et administrateur --%>
+                        <c:if test="${ compte.getIdEquipe() == -1 && compte.role < Compte.MODERATEUR}">
                             <option value="${compte.getIdCompte()}">${compte.getPrenom()} ${compte.getNom()}</option>
                         </c:if>
                     </c:forEach>

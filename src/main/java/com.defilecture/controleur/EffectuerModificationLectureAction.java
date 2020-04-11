@@ -29,9 +29,7 @@ public class EffectuerModificationLectureAction extends Action implements Requir
 
   @Override
   public String execute() {
-    if (userIsConnected()
-        && (userIsCapitaine() || userIsParticipant())
-        && request.getParameter("modifie") != null) {
+    if (userIsConnected() && request.getParameter("modifie") != null) {
 
       if (LocalDateTime.now().isBefore(getDébutLectures())
           || LocalDateTime.now().isAfter(getFinLectures())) {
@@ -50,7 +48,9 @@ public class EffectuerModificationLectureAction extends Action implements Requir
 
         LectureDAO dao = new LectureDAO(cnx);
         Lecture lecture = dao.read(idLecture);
-        if (lecture != null) {
+        if (lecture != null 
+            && (lecture.getIdCompte() == ((Integer)session.getAttribute("currentId")).intValue()
+              || userIsModerateur() || userIsAdmin())) {
           cnx = Connexion.startConnection(Config.DB_USER, Config.DB_PWD, Config.URL, Config.DRIVER);
           dao.setCnx(cnx);
 

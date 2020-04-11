@@ -16,3 +16,7 @@
 .navbar a {
   padding: 10px 15px;
 }
+
+.table td a {
+  padding: 0px 5px;
+}

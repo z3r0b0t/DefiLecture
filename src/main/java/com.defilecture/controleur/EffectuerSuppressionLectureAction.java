@@ -20,6 +20,7 @@ import com.defilecture.modele.DemandeEquipe;
 import com.defilecture.modele.DemandeEquipeDAO;
 import com.defilecture.modele.Lecture;
 import com.defilecture.modele.LectureDAO;
+import com.defilecture.Util;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ public class EffectuerSuppressionLectureAction extends Action implements Require
 
   @Override
   public String execute() {
-    if (userIsConnected() && (userIsCapitaine() || userIsParticipant())) {
+    if (userIsConnected()) {
 
       if (LocalDateTime.now().isBefore(getDébutLectures())
           || LocalDateTime.now().isAfter(getFinLectures())) {
@@ -40,7 +41,16 @@ public class EffectuerSuppressionLectureAction extends Action implements Require
       }
 
       String idLecture = request.getParameter("idLecture");
-      int idCompte = ((Integer) session.getAttribute("currentId")).intValue();
+      int idCompte = ((Integer)session.getAttribute("currentId")).intValue();
+
+      if (userIsModerateur() || userIsAdmin()) {
+        String paramCompteId = request.getParameter("idCompte");
+        if (paramCompteId != null && Util.TryParseInt(paramCompteId)) {
+          idCompte = Integer.parseInt(paramCompteId);
+        } else {
+          return "*.do?tache=afficherPageGestionLectures";
+        }
+      }
 
       try {
 
@@ -75,7 +85,6 @@ public class EffectuerSuppressionLectureAction extends Action implements Require
           }
 
           daoLecture.setCnx(cnx);
-
           daoLecture.delete(lecture);
         }
       } catch (SQLException ex) {

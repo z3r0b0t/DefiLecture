@@ -34,7 +34,7 @@
     <jsp:setProperty name="dao" property="cnx" value="${connexion.connection}"></jsp:setProperty>
 </jsp:useBean>
 <jsp:useBean id="l" class="com.defilecture.modele.Lecture" scope="page"></jsp:useBean>
-<c:set var="l" value="${dao.read(param.id)}"/>
+<c:set var="l" value="${dao.read(param.idLecture)}"/>
 
     <body>
         <h1>Modification de la lecture</h1>

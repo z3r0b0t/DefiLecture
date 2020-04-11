@@ -124,4 +124,13 @@ public class Util {
 
     return sb.toString();
   }
+
+  public static boolean TryParseInt(String valeur) {
+    try {
+      Integer.parseInt(valeur);
+      return true;
+    } catch(Exception ex) {
+      return false;
+    }
+  }
 }
