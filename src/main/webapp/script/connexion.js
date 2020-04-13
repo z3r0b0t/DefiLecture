@@ -6,10 +6,9 @@
 
 
 $(document).ready(function(){
-    $("#lienMDPoublie").click(function(){
-      $("#spanMDP").toggleClass("glyphicon-menu-up")
-      $("#msgMDPoublie").slideToggle();
-    });
+  $("span.gs-button").click(function( event ) {
+    event.preventDefault();
+    $(this).hide();
+  });
 });
-
 

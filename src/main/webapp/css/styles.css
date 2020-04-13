@@ -20,3 +20,36 @@
 .table td a {
   padding: 0px 5px;
 }
+
+/* GestionLectures */
+#lectures table {
+  width: 100%;
+}
+
+#lectures table thead {
+  font-size:19px;
+}
+
+#lectures table thead tr :last-child {
+  text-align:center;
+}
+
+#lectures table tbody tr {
+  line-height: 3.25;
+}
+
+#lectures table tbody tr:hover {
+  background-color:rgba(0,0,0,0.1);
+}
+
+#lectures table td.actions {
+  text-align:center;
+}
+
+#lectures .searchArea {
+  text-align:center;
+}
+
+.filter {
+  padding: 10px 0;
+}
