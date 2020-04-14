@@ -9,5 +9,7 @@ qui sont licenciées sous leur propre licence libre de droit.
 
 ### List.js
 Licence: MIT
+
 Défilecture utilise la version sous license MIT de List.js
+
 https://github.com/javve/list.js
