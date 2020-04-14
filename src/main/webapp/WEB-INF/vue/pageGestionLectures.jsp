@@ -127,7 +127,7 @@
         </table>
         <ul class="pagination"></ul>
       </div>
-      <h4>Filtrer les lectures</h4>
+      <h3>Filtrer les lectures</h3>
       <div class="filter">Titre : <input type="text" id="filterTitre" placeholder="Recherche un titre..." /></div>
       <div class="filter">Date d'inscription : <input type="date" id="filterDateInscriptionFrom"/> à <input type="date" id="filterDateInscriptionTo"/></div>
       <div class="filter">Équipe : 
