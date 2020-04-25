@@ -64,7 +64,7 @@
                 courriel:"${compte.courriel}",
                 equipe:"${equipe.nom}",
                 obligatoire:"${lecture.estObligatoire eq 0 ? "NON" : "OUI"}",
-                actions: '<a href="*.do?tache=effectuerSuppressionLecture&idLecture=${lecture.idLecture}&idCompte=${compte.idCompte}" onclick="return confirm(\"Êtes vous sûr de vouloir supprimer cette lecture?\")">Supprimer</a><a href="*.do?tache=afficherPageModificationLecture&idLecture=${lecture.idLecture}">Modifier</a>',
+                actions: '<a href="*.do?tache=effectuerSuppressionLecture&idLecture=${lecture.idLecture}&idCompte=${compte.idCompte}" onclick="return confirm(\'Êtes vous sûr de vouloir supprimer cette lecture?\');">Supprimer</a><a href="*.do?tache=afficherPageModificationLecture&idLecture=${lecture.idLecture}">Modifier</a>',
             });
           </c:when>
           <c:otherwise>
@@ -105,12 +105,42 @@
 
 <div class="row listeCompte-row"> 
     <div class="col-sm-12 col-lg-12 col-xs-12 col-md-12 listeCompte-col">
+      
+      <%-- Section de filtrage des lectures pour les admins --%>
+      <c:if test="${ sessionScope.role >= 3 }">
+        <h2>Filtrer les lectures</h2>
+        <div class="filter-section">
+          <div class="filter">Titre : <input type="text" id="filterTitre" placeholder="Recherche un titre..." /></div>
+          <div class="filter">Date d'inscription : <input type="date" id="filterDateInscriptionFrom"/> à <input type="date" id="filterDateInscriptionTo"/></div>
+          <br>
+          <div class="filter">Équipe : 
+            <select id="filterEquipe">
+              <option value="">*</option>
+            </select>
+          </div>
+          <div class="filter">Obligatoire : 
+            <select id="filterObligatoire">
+              <option value="">*</option>
+              <option value="OUI">OUI</option>
+              <option value="NON">NON</option>
+            </select>
+          </div>
+          <div class="filter">Courriel : 
+            <select id="filterCourriel">
+              <option value="">*</option>
+            </select>
+          </div>
+        </div>
+      </c:if>
+
       <h2>Liste des lectures</h2>
       <div id="lectures">
-        <div class="searchArea">
-          <input type="text" class="search" name="recherche" style="width:45%;height:30px;font-size:125%;position:relative;left:15px;" maxlength="60" value="">
-          <button title="Explorer!" style="padding:0px;margin-top:15px;height:33px;background:none;border:none;position:relative;top:-3px;left:20px"><img src="./images/victorian_search_icon2.png" height="100%"></button>
-        </div>
+        <c:if test="${ sessionScope.role < 3 }">
+          <div class="searchArea">
+            <input type="text" class="search" name="recherche" style="width:45%;height:30px;font-size:125%;position:relative;left:15px;" maxlength="60" value="">
+            <button title="Explorer!" style="padding:0px;margin-top:15px;height:33px;background:none;border:none;position:relative;top:-3px;left:20px"><img src="./images/victorian_search_icon2.png" height="100%"></button>
+          </div>
+        </c:if>
         <table class="table">
           <thead>
             <tr>
@@ -126,26 +156,6 @@
           </tbody>
         </table>
         <ul class="pagination"></ul>
-      </div>
-      <h3>Filtrer les lectures</h3>
-      <div class="filter">Titre : <input type="text" id="filterTitre" placeholder="Recherche un titre..." /></div>
-      <div class="filter">Date d'inscription : <input type="date" id="filterDateInscriptionFrom"/> à <input type="date" id="filterDateInscriptionTo"/></div>
-      <div class="filter">Équipe : 
-        <select id="filterEquipe">
-          <option value="">*</option>
-        </select>
-      </div>
-      <div class="filter">Obligatoire : 
-        <select id="filterObligatoire">
-          <option value="">*</option>
-          <option value="OUI">OUI</option>
-          <option value="NON">NON</option>
-        </select>
-      </div>
-      <div class="filter">Courriel : 
-        <select id="filterCourriel">
-          <option value="">*</option>
-        </select>
       </div>
     </div>
 </div>

@@ -50,7 +50,42 @@
   text-align:center;
 }
 
+.filter-section {
+  text-align: center;
+}
+
 .filter {
-  padding: 10px 0;
+  padding: 5px;
   font-size: 16px;
+  display: inline-block;
+}
+
+th.sort:hover {
+  cursor: pointer;
+}
+
+th.sort.asc:not(:empty):after {
+  content: '';
+  position: relative;
+  left: 9px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #000;
+  clear: both;
+  bottom: 17px;
+}
+
+th.sort:not(:empty):not(.asc):after, th.sort.desc:not(:empty):after {
+  content: '';
+  position: relative;
+  left: 9px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #000;
+  clear: both;
+  top: 17px;
 }
