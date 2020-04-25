@@ -72,6 +72,7 @@
               titre:"${lecture.titre}",
               dateInscription:"${lecture.dateInscription}",
               obligatoire:"${lecture.estObligatoire eq 0 ? "NON" : "OUI"}",
+              actions: '<a href="*.do?tache=effectuerSuppressionLecture&idLecture=${lecture.idLecture}&idCompte=${compte.idCompte}" onclick="return confirm(\"Êtes vous sûr de vouloir supprimer cette lecture?\")">Supprimer</a><a href="*.do?tache=afficherPageModificationLecture&idLecture=${lecture.idLecture}">Modifier</a>',
             });
           </c:otherwise>
         </c:choose>
@@ -84,8 +85,8 @@
     <c:if test="${ sessionScope.role >= 3 }">
       'equipe',
       'courriel',
-      'actions',
     </c:if>
+    'actions',
   ];
 
   var itemTemplate = "<tr>";
@@ -95,8 +96,8 @@
   <c:if test="${ sessionScope.role >= 3 }">
     itemTemplate += "<td class='equipe'></td>";
     itemTemplate += "<td class='courriel'></td>";
-    itemTemplate += "<td class='actions' colspan='2'></td>";
   </c:if>
+  itemTemplate += "<td class='actions' colspan='2'></td>";
   itemTemplate += "</tr>";
 
   var lecturesList;
@@ -147,8 +148,10 @@
               <th class="sort" data-sort="titre">Titre</th>
               <th class="sort" data-sort="dateInscription">Date d'inscription</th>
               <th class="sort" data-sort="obligatoire">Obligatoire</th>
-              <th class="sort" data-sort="equipe">Équipe</th>
-              <th class="sort" data-sort="courriel">Courriel</th>
+              <c:if test="${ sessionScope.role >= 3 }">
+                <th class="sort" data-sort="equipe">Équipe</th>
+                <th class="sort" data-sort="courriel">Courriel</th>
+              </c:if>
               <th class="sort" data-sort="actions"></th>
             </tr>
           </thead>
